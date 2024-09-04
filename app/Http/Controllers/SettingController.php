@@ -10,6 +10,8 @@ use App\Models\Favicon;
 use App\Models\Information;
 use App\Models\Message;
 use App\Models\Productsetting;
+use App\Models\Onoffsection;
+use App\Models\Metasection;
 class SettingController extends Controller
 {
     public function savelogo(Request $request){
@@ -207,5 +209,65 @@ class SettingController extends Controller
         $productsetting->total_popular_product_home = $request->input('total_popular_product_home');
         $productsetting->update();
         return back()->with('status','The product settings updated successfully');
+    }
+    public function saveonoffsection(Request $request){
+        $this->validate($request,[
+            'home_service_on_off' => 'required',
+            'home_welcome_on_off' => 'required',
+            'home_featured_product_on_off' => 'required',
+            'home_latest_product_on_off' => 'required',
+            'home_popular_product_on_off' => 'required',
+        ]);
+        $onoffsection = new Onoffsection();
+        $onoffsection->home_service_on_off = $request->input('home_service_on_off');
+        $onoffsection->home_welcome_on_off = $request->input('home_welcome_on_off');
+        $onoffsection->home_featured_product_on_off = $request->input('home_featured_product_on_off');
+        $onoffsection->home_latest_product_on_off = $request->input('home_latest_product_on_off');
+        $onoffsection->home_popular_product_on_off = $request->input('home_popular_product_on_off');
+        $onoffsection->save();
+        return back()->with('status','The on/off section saved successfully');
+    }
+    public function updateonoffsection(Request $request, $id){
+        $this->validate($request,[
+            'home_service_on_off' => 'required',
+            'home_welcome_on_off' => 'required',
+            'home_featured_product_on_off' => 'required',
+            'home_latest_product_on_off' => 'required',
+            'home_popular_product_on_off' => 'required',
+        ]);
+        $onoffsection = Onoffsection::find($id);
+        $onoffsection->home_service_on_off = $request->input('home_service_on_off');
+        $onoffsection->home_welcome_on_off = $request->input('home_welcome_on_off');
+        $onoffsection->home_featured_product_on_off = $request->input('home_featured_product_on_off');
+        $onoffsection->home_latest_product_on_off = $request->input('home_latest_product_on_off');
+        $onoffsection->home_popular_product_on_off = $request->input('home_popular_product_on_off');
+        $onoffsection->update();
+        return back()->with('status','The on/off section updated successfully');
+    }
+    public function savemetasection(Request $request){
+        $this->validate($request,[
+            'meta_title' => 'required',
+            'meta_description' => 'required',
+            'meta_keywords' => 'required',
+        ]);
+        $metasection = Metasection::first();
+        $metasection->meta_title = $request->input('meta_title');
+        $metasection->meta_description = $request->input('meta_description');
+        $metasection->meta_keywords = $request->input('meta_keywords');
+        $metasection->save();
+        return back()->with('status','The meta section saved successfully');
+    }
+    public function updatemetasection(Request $request, $id){
+        $this->validate($request,[
+            'meta_title' => 'required',
+            'meta_description' => 'required',
+            'meta_keywords' => 'required',
+        ]);
+        $metasection = Metasection::find($id);
+        $metasection->meta_title = $request->input('meta_title');
+        $metasection->meta_description = $request->input('meta_description');
+        $metasection->meta_keywords = $request->input('meta_keywords');
+        $metasection->update();
+        return back()->with('status','The meta section updated successfully');
     }
 }

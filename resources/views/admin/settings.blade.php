@@ -254,15 +254,30 @@ Web Settings
                    </div>
                    <div class="tab-pane" id="tab_6">
                       <h3>Sections On and Off</h3>
-                      <form class="form-horizontal" action="{{}}" method="post">
+                      <form class="form-horizontal" action="{{$onoffsection ? url('admin/updateonoffsection',[$onoffsection->id]) : url('admin/saveonoffsection')}}" method="post">
+                        @csrf
+                        @if($onoffsection)
+                        @method('PUT')
+                        @endif
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Service Section </label>
                                   <div class="col-sm-4">
+                                    
                                      <select name="home_service_on_off" class="form-control" style="width:auto;">
+                                       @if($onoffsection)
+                                        @if($onoffsection->home_service_on_off == 1)
                                         <option value="1" selected>On</option>
                                         <option value="0" >Off</option>
+                                        @else
+                                        <option value="1" >On</option>
+                                        <option value="0" selected>Off</option>
+                                        @endif
+                                       @else
+                                        <option value="1" selected>On</option>
+                                        <option value="0" >Off</option>
+                                       @endif
                                      </select>
                                   </div>
                                </div>
@@ -270,8 +285,18 @@ Web Settings
                                   <label for="" class="col-sm-3 control-label">Welcome Section </label>
                                   <div class="col-sm-4">
                                      <select name="home_welcome_on_off" class="form-control" style="width:auto;">
+                                       @if($onoffsection)
+                                        @if($onoffsection->home_welcome_on_off == 1)
                                         <option value="1" selected>On</option>
                                         <option value="0" >Off</option>
+                                        @else
+                                        <option value="1" >On</option>
+                                        <option value="0" selected>Off</option>
+                                        @endif
+                                       @else
+                                        <option value="1" selected>On</option>
+                                        <option value="0" >Off</option>
+                                       @endif
                                      </select>
                                   </div>
                                </div>
@@ -279,8 +304,18 @@ Web Settings
                                   <label for="" class="col-sm-3 control-label">Featured Product Section </label>
                                   <div class="col-sm-4">
                                      <select name="home_featured_product_on_off" class="form-control" style="width:auto;">
+                                       @if($onoffsection)
+                                        @if($onoffsection->home_featured_product_on_off == 1)
                                         <option value="1" selected>On</option>
                                         <option value="0" >Off</option>
+                                        @else
+                                        <option value="1" >On</option>
+                                        <option value="0" selected>Off</option>
+                                        @endif
+                                       @else
+                                        <option value="1" selected>On</option>
+                                        <option value="0" >Off</option>
+                                       @endif
                                      </select>
                                   </div>
                                </div>
@@ -288,8 +323,18 @@ Web Settings
                                   <label for="" class="col-sm-3 control-label">Latest Product Section </label>
                                   <div class="col-sm-4">
                                      <select name="home_latest_product_on_off" class="form-control" style="width:auto;">
+                                        @if($onoffsection)
+                                        @if($onoffsection->home_latest_product_on_off == 1)
                                         <option value="1" selected>On</option>
                                         <option value="0" >Off</option>
+                                        @else
+                                        <option value="1" >On</option>
+                                        <option value="0" selected>Off</option>
+                                        @endif
+                                       @else
+                                        <option value="1" selected>On</option>
+                                        <option value="0" >Off</option>
+                                       @endif
                                      </select>
                                   </div>
                                </div>
@@ -297,46 +342,56 @@ Web Settings
                                   <label for="" class="col-sm-3 control-label">Popular Product Section </label>
                                   <div class="col-sm-4">
                                      <select name="home_popular_product_on_off" class="form-control" style="width:auto;">
+                                       @if($onoffsection)
+                                        @if($onoffsection->home_popular_product_on_off == 1)
                                         <option value="1" selected>On</option>
                                         <option value="0" >Off</option>
+                                        @else
+                                        <option value="1" >On</option>
+                                        <option value="0" selected>Off</option>
+                                        @endif
+                                       @else
+                                        <option value="1" selected>On</option>
+                                        <option value="0" >Off</option>
+                                       @endif
                                      </select>
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label"></label>
                                   <div class="col-sm-6">
-                                     <button type="submit" class="btn btn-success pull-left" name="form6_0">Update</button>
+                                     <button type="submit" class="btn btn-success pull-left" name="form6_0">{{$onoffsection ? 'Update On/Off Section' : 'Save On/Off Section'}}</button>
                                   </div>
                                </div>
                             </div>
                          </div>
                       </form>
                       <h3>Meta Section</h3>
-                      <form class="form-horizontal" action="" method="post">
+                      <form class="form-horizontal" action="{{$metasection ? url('admin/updatemetasection',[$metasection->id]) : url('admin/savemetasection')}}" method="post">
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Meta Title </label>
                                   <div class="col-sm-8">
-                                     <input type="text" name="meta_title_home" class="form-control" value="Ecommerce PHP">
+                                     <input type="text" name="meta_title_home" class="form-control" value="{{$metasection ? $metasection->meta_title_home : ''}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Meta Keyword </label>
                                   <div class="col-sm-8">
-                                     <textarea class="form-control" name="meta_keyword_home" style="height:100px;">online fashion store, garments shop, online garments</textarea>
+                                     <textarea class="form-control" name="meta_keyword_home" style="height:100px;">{{$metasection ? $metasection->meta_keyword_home : ''}}</textarea>
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Meta Description </label>
                                   <div class="col-sm-8">
-                                     <textarea class="form-control" name="meta_description_home" style="height:200px;">ecommerce php project with mysql database</textarea>
+                                     <textarea class="form-control" name="meta_description_home" style="height:200px;">{{$metasection ? $metasection->meta_description_home : ''}}</textarea>
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label"></label>
                                   <div class="col-sm-6">
-                                     <button type="submit" class="btn btn-success pull-left" name="form6">Update</button>
+                                     <button type="submit" class="btn btn-success pull-left" name="form6">{{$metasection ? 'Update Meta Section' : 'Save Meta Section'}}</button>
                                   </div>
                                </div>
                             </div>

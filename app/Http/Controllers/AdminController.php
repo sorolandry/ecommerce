@@ -8,7 +8,8 @@ use App\Models\Favicon;
 use App\Models\Information;
 use App\Models\Message;
 use App\Models\Productsetting;
-
+use App\Models\Onoffsection;
+use App\Models\Metasection;
 class AdminController extends Controller
 {
     public function viewadmindashboard()
@@ -22,7 +23,9 @@ class AdminController extends Controller
         $information = Information::first();
         $message = Message::first();
         $productsetting = Productsetting::first();
-        return view('admin.settings',compact("logoimage","favicon","information","message","productsetting"));
+        $onoffsection = Onoffsection::first();
+        $metasection = Metasection::first();
+        return view('admin.settings',compact("logoimage","favicon","information","message","productsetting","onoffsection","metasection"));
     }
     public function viewpagesettings()
     {

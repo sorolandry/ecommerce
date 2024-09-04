@@ -11,16 +11,13 @@ return new class extends Migration
      *
      * @return void
      */
-    
     public function up()
     {
-        Schema::create('onoffsections', function (Blueprint $table) {
+        Schema::create('metasections', function (Blueprint $table) {
             $table->id();
-            $table->string('home_service_on_off');
-            $table->string('home_welcome_on_off');
-            $table->string('home_featured_product_on_off');
-            $table->string('home_latest_product_on_off');
-            $table->string('home_popular_product_on_off');
+            $table->string('meta_title_home');
+            $table->string('meta_description_home');
+            $table->string('meta_keyword_home');
             $table->timestamps();
         });
     }
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('onoffsections');
+        Schema::dropIfExists('metasections');
     }
 };
