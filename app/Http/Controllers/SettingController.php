@@ -12,6 +12,10 @@ use App\Models\Message;
 use App\Models\Productsetting;
 use App\Models\Onoffsection;
 use App\Models\Metasection;
+use App\Models\Featuredproductsection;
+use App\Models\Latestproductsection;
+use App\Models\Popularproductsection;
+use App\Models\Newslettersection;
 class SettingController extends Controller
 {
     public function savelogo(Request $request){
@@ -188,7 +192,7 @@ class SettingController extends Controller
             'total_popular_product_home' => 'required',
         ]);
 
-        $productsetting = Productsetting::first();
+        $productsetting = Productsetting::firstOrNew();
 
         $productsetting->total_featured_product_home = $request->input('total_featured_product_home');
         $productsetting->total_latest_product_home = $request->input('total_latest_product_home');
@@ -246,28 +250,112 @@ class SettingController extends Controller
     }
     public function savemetasection(Request $request){
         $this->validate($request,[
-            'meta_title' => 'required',
-            'meta_description' => 'required',
-            'meta_keywords' => 'required',
+            'meta_title_home' => 'required',
+            'meta_description_home' => 'required',
+            'meta_keywords_home' => 'required',
         ]);
-        $metasection = Metasection::first();
-        $metasection->meta_title = $request->input('meta_title');
-        $metasection->meta_description = $request->input('meta_description');
-        $metasection->meta_keywords = $request->input('meta_keywords');
+        $metasection = new Metasection();
+        $metasection->meta_title_home = $request->input('meta_title_home');
+        $metasection->meta_description_home = $request->input('meta_description_home');
+        $metasection->meta_keywords_home = $request->input('meta_keywords_home');
         $metasection->save();
         return back()->with('status','The meta section saved successfully');
     }
     public function updatemetasection(Request $request, $id){
         $this->validate($request,[
-            'meta_title' => 'required',
-            'meta_description' => 'required',
-            'meta_keywords' => 'required',
+            'meta_title_home' => 'required',
+            'meta_description_home' => 'required',
+            'meta_keywords_home' => 'required',
         ]);
         $metasection = Metasection::find($id);
-        $metasection->meta_title = $request->input('meta_title');
-        $metasection->meta_description = $request->input('meta_description');
-        $metasection->meta_keywords = $request->input('meta_keywords');
+        $metasection->meta_title_home = $request->input('meta_title_home');
+        $metasection->meta_description_home = $request->input('meta_description_home');
+        $metasection->meta_keywords_home = $request->input('meta_keywords_home');
         $metasection->update();
         return back()->with('status','The meta section updated successfully');
+    }
+    public function savefeaturedproduct(Request $request){
+        $this->validate($request,[
+            'featured_product_title' => 'required',
+            'featured_product_subtitle' => 'required',
+        ]);
+        $featuredproduct = new Featuredproductsection();
+        $featuredproduct->featured_product_title = $request->input('featured_product_title');
+        $featuredproduct->featured_product_subtitle = $request->input('featured_product_subtitle');
+        $featuredproduct->save();
+        return back()->with('status','The featured product section saved successfully');
+    }
+    public function updatefeaturedproduct(Request $request, $id){
+        $this->validate($request,[
+            'featured_product_title' => 'required',
+            'featured_product_subtitle' => 'required',
+        ]);
+        $featuredproduct = Featuredproductsection::find($id);
+        $featuredproduct->featured_product_title = $request->input('featured_product_title');
+        $featuredproduct->featured_product_subtitle = $request->input('featured_product_subtitle');
+        $featuredproduct->update();
+        return back()->with('status','The featured product section updated successfully');
+    }
+    public function savelatestproduct(Request $request){
+        $this->validate($request,[
+            'latest_product_title' => 'required',
+            'latest_product_subtitle' => 'required',
+        ]);
+        $latestproduct = new Latestproductsection();
+        $latestproduct->latest_product_title = $request->input('latest_product_title');
+        $latestproduct->latest_product_subtitle = $request->input('latest_product_subtitle');
+        $latestproduct->save();
+        return back()->with('status','The latest product section saved successfully');
+    }
+    public function updatelatestproduct(Request $request, $id){
+        $this->validate($request,[
+            'latest_product_title' => 'required',
+            'latest_product_subtitle' => 'required',
+        ]);
+        $latestproduct = Latestproductsection::find($id);
+        $latestproduct->latest_product_title = $request->input('latest_product_title');
+        $latestproduct->latest_product_subtitle = $request->input('latest_product_subtitle');
+        $latestproduct->update();
+        return back()->with('status','The latest product section updated successfully');
+    }
+    public function savepopularproduct(Request $request){
+        $this->validate($request,[
+            'popular_product_title' => 'required',
+            'popular_product_subtitle' => 'required',
+        ]);
+        $popularproduct = new Popularproductsection();
+        $popularproduct->popular_product_title = $request->input('popular_product_title');
+        $popularproduct->popular_product_subtitle = $request->input('popular_product_subtitle');
+        $popularproduct->save();
+        return back()->with('status','The popular product section saved successfully');
+    }
+    public function updatepopularproduct(Request $request, $id){
+        $this->validate($request,[
+            'popular_product_title' => 'required',
+            'popular_product_subtitle' => 'required',
+        ]);
+        $popularproduct = Popularproductsection::find($id);
+        $popularproduct->popular_product_title = $request->input('popular_product_title');
+        $popularproduct->popular_product_subtitle = $request->input('popular_product_subtitle');
+        $popularproduct->update();
+        return back()->with('status','The popular product section updated successfully');
+    }
+    public function savenewslettersection(Request $request){
+        $this->validate($request,[
+            'newsletter_text' => 'required',
+        ]);
+        $newslettersection = new Newslettersection();
+        $newslettersection->newsletter_text = $request->input('newsletter_text');
+        $newslettersection->save();
+        return back()->with('status','The newsletter section saved successfully');
+    }
+    public function updatenewslettersection(Request $request, $id){
+        $this->validate($request,[
+            'newsletter_text' => 'required',
+        ]);
+        $newslettersection = Newslettersection::find($id);
+        $newslettersection->newsletter_text = $request->input('newsletter_text');
+        $newslettersection->update();
+        return back()->with('status','The newsletter section updated successfully');
     }
 }

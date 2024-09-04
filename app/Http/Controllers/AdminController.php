@@ -10,6 +10,10 @@ use App\Models\Message;
 use App\Models\Productsetting;
 use App\Models\Onoffsection;
 use App\Models\Metasection;
+use App\Models\Featuredproductsection;
+use App\Models\Latestproductsection;
+use App\Models\Popularproductsection;
+use App\Models\Newslettersection;
 class AdminController extends Controller
 {
     public function viewadmindashboard()
@@ -24,8 +28,24 @@ class AdminController extends Controller
         $message = Message::first();
         $productsetting = Productsetting::first();
         $onoffsection = Onoffsection::first();
-        $metasection = Metasection::first();
-        return view('admin.settings',compact("logoimage","favicon","information","message","productsetting","onoffsection","metasection"));
+        $metasection = Metasection::first(); // Ajoutez cette ligne
+        $featuredproduct = Featuredproductsection::first();
+        $latestproduct = Latestproductsection::first();
+        $popularproduct = Popularproductsection::first();   
+        $newslettersection = Newslettersection::first();
+        return view('admin.settings', compact(
+            "logoimage",
+            "favicon",
+            "information",
+            "message",
+            "productsetting",
+            "onoffsection",
+            "metasection",
+            "featuredproduct",
+            "latestproduct",
+            "popularproduct",
+            "newslettersection"
+        ));
     }
     public function viewpagesettings()
     {
@@ -146,4 +166,5 @@ class AdminController extends Controller
     public function viewtoplevelcategory(){
         return view('admin.toplevelcategory');
     }
+    
 }

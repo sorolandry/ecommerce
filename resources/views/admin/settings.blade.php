@@ -367,25 +367,29 @@ Web Settings
                          </div>
                       </form>
                       <h3>Meta Section</h3>
-                      <form class="form-horizontal" action="{{$metasection ? url('admin/updatemetasection',[$metasection->id]) : url('admin/savemetasection')}}" method="post">
+                      <form class="form-horizontal" action="{{$metasection ? url('admin/updatemetasection',[$metasection->id]) : url('admin/savemetasection')}}" method="POST">
+                        @csrf
+                        @if($metasection)
+                        @method('PUT')
+                        @endif
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Meta Title </label>
                                   <div class="col-sm-8">
-                                     <input type="text" name="meta_title_home" class="form-control" value="{{$metasection ? $metasection->meta_title_home : ''}}">
+                                     <input type="text" name="meta_title_home" class="form-control" value="{{$metasection ? $metasection->meta_title_home : ''}}" required>
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Meta Keyword </label>
                                   <div class="col-sm-8">
-                                     <textarea class="form-control" name="meta_keyword_home" style="height:100px;">{{$metasection ? $metasection->meta_keyword_home : ''}}</textarea>
+                                     <textarea class="form-control" name="meta_keyword_home" style="height:100px;" required>{{$metasection ? $metasection->meta_keyword_home : ''}}</textarea>
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Meta Description </label>
                                   <div class="col-sm-8">
-                                     <textarea class="form-control" name="meta_description_home" style="height:200px;">{{$metasection ? $metasection->meta_description_home : ''}}</textarea>
+                                     <textarea class="form-control" name="meta_description_home" style="height:200px;" required>{{$metasection ? $metasection->meta_description_home : ''}}</textarea>
                                   </div>
                                </div>
                                <div class="form-group">
@@ -399,94 +403,106 @@ Web Settings
                       </form>
                       
                       <h3>Featured Product Section</h3>
-                      <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                      <form class="form-horizontal" action="{{$featuredproduct ? url('admin/updatefeaturedproduct',[$featuredproduct->id]) : url('admin/savefeaturedproduct')}}" method="POST">
+                        @csrf
+                        @if($featuredproduct)
+                        @method('PUT')
+                        @endif
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Featured Product Title<span>*</span></label>
                                   <div class="col-sm-8">
-                                     <input type="text" class="form-control" name="featured_product_title" value="Featured Products">
+                                     <input type="text" class="form-control" name="featured_product_title" value="{{$featuredproduct ? $featuredproduct->featured_product_title : ''}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Featured Product SubTitle<span>*</span></label>
                                   <div class="col-sm-8">
-                                     <input type="text" class="form-control" name="featured_product_subtitle" value="Our list on Top Featured Products">
+                                     <input type="text" class="form-control" name="featured_product_subtitle" value="{{$featuredproduct ? $featuredproduct->featured_product_subtitle : ''}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label"></label>
                                   <div class="col-sm-6">
-                                     <button type="submit" class="btn btn-success pull-left" name="form6_4">Update</button>
+                                     <button type="submit" class="btn btn-success pull-left" name="form6_4">{{$featuredproduct ? 'Update Featured Product' : 'Save Featured Product'}}</button>
                                   </div>
                                </div>
                             </div>
                          </div>
                       </form>
                       <h3>Latest Product Section</h3>
-                      <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                      <form class="form-horizontal" action="{{$latestproduct ? url('admin/updatelatestproduct',[$latestproduct->id]) : url('admin/savelatestproduct')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        @if($latestproduct)
+                        @method('PUT')
+                        @endif
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Latest Product Title<span>*</span></label>
                                   <div class="col-sm-8">
-                                     <input type="text" class="form-control" name="latest_product_title" value="Latest Products">
+                                     <input type="text" class="form-control" name="latest_product_title" value="{{$latestproduct ? $latestproduct->latest_product_title : 'Latest Products'}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Latest Product SubTitle<span>*</span></label>
                                   <div class="col-sm-8">
-                                     <input type="text" class="form-control" name="latest_product_subtitle" value="Our list of recently added products">
+                                     <input type="text" class="form-control" name="latest_product_subtitle" value="{{$latestproduct ? $latestproduct->latest_product_subtitle : 'Our list of recently added products'}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label"></label>
                                   <div class="col-sm-6">
-                                     <button type="submit" class="btn btn-success pull-left" name="form6_5">Update</button>
+                                     <button type="submit" class="btn btn-success pull-left" name="form6_5">{{$latestproduct ? 'Update Latest Product' : 'Save Latest Product'}}</button>
                                   </div>
                                </div>
                             </div>
                          </div>
                       </form>
                       <h3>Popular Product Section</h3>
-                      <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                      <form class="form-horizontal" action="{{$popularproduct ? url('admin/updatepopularproduct',[$popularproduct->id]) : url('admin/savepopularproduct')}}" method="post" enctype="multipart/form-data">
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Popular Product Title<span>*</span></label>
                                   <div class="col-sm-8">
-                                     <input type="text" class="form-control" name="popular_product_title" value="Popular Products">
+                                       <input type="text" class="form-control" name="popular_product_title" value="{{$popularproduct ? $popularproduct->popular_product_title : 'Popular Products'}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Popular Product SubTitle<span>*</span></label>
                                   <div class="col-sm-8">
-                                     <input type="text" class="form-control" name="popular_product_subtitle" value="Popular products based on customer's choice">
+                                       <input type="text" class="form-control" name="popular_product_subtitle" value="{{$popularproduct ? $popularproduct->popular_product_subtitle : 'Popular products based on customer\'s choice'}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label"></label>
                                   <div class="col-sm-6">
-                                     <button type="submit" class="btn btn-success pull-left" name="form6_6">Update</button>
+                                     <button type="submit" class="btn btn-success pull-left" name="form6_6">{{$popularproduct ? 'Update Popular Product' : 'Save Popular Product'}}</button>
                                   </div>
                                </div>
                             </div>
                          </div>
                       </form>
                       <h3>Newsletter Section</h3>
-                      <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                      <form class="form-horizontal" action="{{$newslettersection ? url('admin/updatenewslettersection',[$newslettersection->id]) : url('admin/savenewslettersection')}}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        @if($newslettersection)
+                        @method('PUT')
+                        @endif
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label">Newsletter Text</label>
                                   <div class="col-sm-8">
-                                     <textarea name="newsletter_text" class="form-control" cols="30" rows="10" style="height: 120px;">Sign-up to our newsletter for latest promotions and discounts.</textarea>
+                                     <textarea name="newsletter_text" class="form-control" cols="30" rows="10" style="height: 120px;">{{$newslettersection ? $newslettersection->newsletter_text : 'Sign-up to our newsletter for latest promotions and discounts.'}}</textarea>
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-3 control-label"></label>
                                   <div class="col-sm-6">
-                                     <button type="submit" class="btn btn-success pull-left" name="form6_3">Update</button>
+                                     <button type="submit" class="btn btn-success pull-left" name="form6_3">{{$newslettersection ? 'Update Newsletter Section' : 'Save Newsletter Section'}}</button>
                                   </div>
                                </div>
                             </div>
