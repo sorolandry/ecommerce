@@ -13,9 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('banners', function (Blueprint $table) {
+        Schema::create('payementsettings', function (Blueprint $table) {
             $table->id();
-            $table->string('photo');
+            $table->string('paypal_email');
+            $table->string('bank_detail');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('banners');
+        Schema::dropIfExists('payementsettings');
     }
 };

@@ -16,6 +16,8 @@ use App\Models\Featuredproductsection;
 use App\Models\Latestproductsection;
 use App\Models\Popularproductsection;
 use App\Models\Newslettersection;
+use App\Models\Banner;
+use App\Models\PayementSetting;
 class SettingController extends Controller
 {
     public function savelogo(Request $request){
@@ -357,5 +359,76 @@ class SettingController extends Controller
         $newslettersection->newsletter_text = $request->input('newsletter_text');
         $newslettersection->update();
         return back()->with('status','The newsletter section updated successfully');
+    }
+    public function savebanner(Request $request){
+        $this->validate($request,[
+            'photo' => 'image|nullable|max:1999|required'
+        ]);
+        // 1 : File name with extension
+        $fileNameWithExt = $request->file('photo')->getClientOriginalName();
+        // print_r($fileNameWithExt);
+        // 2 : File name without extension
+        $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        // print_r($fileName);
+
+        // 3 : Get just extension
+        $extension = $request->file('photo')->getClientOriginalExtension();
+        // 4 : File name to store
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        // 5 : Upload Image
+        $path = $request->file('photo')->storeAs('public/banner',$fileNameToStore);
+
+        $banner = new Banner();
+        $banner->photo = $fileNameToStore;
+        $banner->save();
+        return back()->with('status','The banner image saved successfully');
+    }
+    public function updatebanner(Request $request, $id){
+        $this->validate($request,[
+            'photo' => 'image|nullable|max:1999|required'
+        ]);
+        // 1 : File name with extension
+        $fileNameWithExt = $request->file('photo')->getClientOriginalName();
+        // print_r($fileNameWithExt);
+        // 2 : File name without extension
+        $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        // print_r($fileName);
+
+        // 3 : Get just extension
+        $extension = $request->file('photo')->getClientOriginalExtension();
+        // 4 : File name to store
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        //delete old image
+        $banner = Banner::find($id);
+        //delete the image
+        Storage::delete('public/banner/'.$banner->photo);
+        // 5 : Upload Image
+        $path = $request->file('photo')->storeAs('public/banner',$fileNameToStore);
+        
+        $banner->photo = $fileNameToStore;
+        $banner->update();
+        return back()->with('status','The banner image updated successfully');
+    }
+    public function savepayement(Request $request){
+        $this->validate($request,[
+            'paypal_email' => 'required',
+            'bank_detail' => 'required',
+        ]);
+        $payementSetting = new PayementSetting();
+        $payementSetting->paypal_email = $request->input('paypal_email');
+        $payementSetting->bank_detail = $request->input('bank_detail');
+        $payementSetting->save();
+        return back()->with('status','The payement setting saved successfully');
+    }
+    public function updatepayement(Request $request, $id){
+        $this->validate($request,[
+            'paypal_email' => 'required',
+            'bank_detail' => 'required',
+        ]);
+        $payementSetting = PayementSetting::find($id);
+        $payementSetting->paypal_email = $request->input('paypal_email');
+        $payementSetting->bank_detail = $request->input('bank_detail');
+        $payementSetting->update();
+        return back()->with('status','The payement setting updated successfully');
     }
 }

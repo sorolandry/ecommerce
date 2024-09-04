@@ -5,6 +5,7 @@ use App\Http\Controllers\ClientController;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\ShopController;
 /*
 
 |--------------------------------------------------------------------------
@@ -54,7 +55,7 @@ Route::get('admin/socialmedia', [AdminController::class, 'viewsocialmedia']);
 Route::get('admin/subscriber', [AdminController::class, 'viewsubscriber']); 
 Route::get('admin/registered', [AdminController::class, 'viewregistered']); 
 Route::get('admin/size', [AdminController::class, 'viewsize']); 
-Route::get('admin/editsize', [AdminController::class, 'vieweditsize']); 
+
 Route::get('admin/addsize', [AdminController::class, 'viewaddsize']); 
 Route::get('admin/color', [AdminController::class, 'viewcolor']); 
 Route::get('admin/editcolor', [AdminController::class, 'vieweditcolor']); 
@@ -106,3 +107,18 @@ Route::post('admin/savepopularproduct', [SettingController::class, 'savepopularp
 Route::put('admin/updatepopularproduct/{id}', [SettingController::class, 'updatepopularproduct']);
 Route::post('admin/savenewslettersection', [SettingController::class, 'savenewslettersection']);
 Route::put('admin/updatenewslettersection/{id}', [SettingController::class, 'updatenewslettersection']);
+Route::post('admin/savebanner', [SettingController::class, 'savebanner']);
+Route::put('admin/updatebanner/{id}', [SettingController::class, 'updatebanner']);
+Route::post('admin/savepayement', [SettingController::class, 'savepayement']);
+Route::put('admin/updatepayement/{id}', [SettingController::class, 'updatepayement']);
+
+//Shopize Routes
+Route::post('admin/savesize', [ShopController::class, 'savesize']);
+Route::get('admin/editsize/{id}', [ShopController::class, 'vieweditsize']);
+Route::put('admin/updatesize/{id}', [ShopController::class, 'updatesize']); 
+Route::delete('admin/deletesize/{id}', [ShopController::class, 'deletesize']); 
+
+Route::post('admin/savecolor', [ShopController::class, 'savecolor']);
+Route::get('admin/editcolor/{id}', [ShopController::class, 'vieweditcolor']);
+Route::put('admin/updatecolor/{id}', [ShopController::class, 'updatecolor']); 
+Route::delete('admin/deletecolor/{id}', [ShopController::class, 'deletecolor']); 

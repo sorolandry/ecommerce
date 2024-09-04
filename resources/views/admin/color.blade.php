@@ -10,9 +10,20 @@ Color
               <h1>View Colors</h1>
            </div>
            <div class="content-header-right">
-              <a href="color-add.php" class="btn btn-primary btn-sm">Add New</a>
+              <a href="{{url('admin/addcolor',[])}}" class="btn btn-primary btn-sm">Add New</a>
            </div>
         </section>
+        @if(Session::has("status"))
+        <section class="content" style="min-height:auto;margin-bottom: -30px;">
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="callout callout-success">
+                    <p>{{Session::get('status')}}</p>
+                 </div>
+              </div>
+           </div>
+        </section>
+        @endif
         <section class="content">
            <div class="row">
               <div class="col-md-12">
@@ -27,15 +38,22 @@ Color
                              </tr>
                           </thead>
                           <tbody>
+                             @foreach ($colors as $color)
                              <tr>
-                                <td>1</td>
-                                <td>Red</td>
-                                <td>
-                                   <a href="color-edit.php?id=1" class="btn btn-primary btn-xs">Edit</a>
-                                   <a href="#" class="btn btn-danger btn-xs" data-href="color-delete.php?id=1" data-toggle="modal" data-target="#confirm-delete">Delete</a>
+                                <td>{{$color->id}}</td>
+                                <td>{{$color->color_name}}</td>
+                                <td style="display: flex; gap: 10px;">
+                                   <a href="{{url('admin/editcolor',[$color->id])}}" class="btn btn-primary btn-xs">Edit</a>
+                                   {{-- <a href="#" class="btn btn-danger btn-xs" data-href="{{url('admin/deletecolor',[$color->id])}}" data-toggle="modal" data-target="#confirm-delete">Delete</a> --}}
+                                   <form action="{{url('admin/deletecolor',[$color->id])}}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                   </form>
                                 </td>
                              </tr>
-                             <tr>
+                             @endforeach
+                             {{-- <tr>
                                 <td>2</td>
                                 <td>Black</td>
                                 <td>
@@ -258,7 +276,7 @@ Color
                                    <a href="color-edit.php?id=29" class="btn btn-primary btn-xs">Edit</a>
                                    <a href="#" class="btn btn-danger btn-xs" data-href="color-delete.php?id=29" data-toggle="modal" data-target="#confirm-delete">Delete</a>
                                 </td>
-                             </tr>
+                             </tr> --}}
                           </tbody>
                        </table>
                     </div>

@@ -14,6 +14,10 @@ use App\Models\Featuredproductsection;
 use App\Models\Latestproductsection;
 use App\Models\Popularproductsection;
 use App\Models\Newslettersection;
+use App\Models\Banner;
+use App\Models\PayementSetting;
+use App\Models\Size;
+use App\Models\Color;
 class AdminController extends Controller
 {
     public function viewadmindashboard()
@@ -28,11 +32,13 @@ class AdminController extends Controller
         $message = Message::first();
         $productsetting = Productsetting::first();
         $onoffsection = Onoffsection::first();
-        $metasection = Metasection::first(); // Ajoutez cette ligne
+        $metasection = Metasection::first();
         $featuredproduct = Featuredproductsection::first();
         $latestproduct = Latestproductsection::first();
         $popularproduct = Popularproductsection::first();   
         $newslettersection = Newslettersection::first();
+        $banner = Banner::first();
+        $payementSetting = PayementSetting::first();
         return view('admin.settings', compact(
             "logoimage",
             "favicon",
@@ -44,7 +50,9 @@ class AdminController extends Controller
             "featuredproduct",
             "latestproduct",
             "popularproduct",
-            "newslettersection"
+            "newslettersection",
+            "banner",
+            "payementSetting"
         ));
     }
     public function viewpagesettings()
@@ -79,16 +87,16 @@ class AdminController extends Controller
         return view('admin.registered');
     }
     public function viewsize(){
-        return view('admin.size');
+        $sizes = Size::get();
+        return view('admin.size')->with('sizes',$sizes);
     }
-    public function vieweditsize(){
-        return view('admin.editsize');
-    }
+    
     public function viewaddsize(){
         return view('admin.addsize');
     }
     public function viewcolor(){
-        return view('admin.color');
+        $colors = Color::get();
+        return view('admin.color')->with('colors',$colors);
     }
     public function vieweditcolor(){
         return view('admin.editcolor');

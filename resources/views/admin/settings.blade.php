@@ -512,17 +512,25 @@ Web Settings
                    <div class="tab-pane" id="tab_7">
                       <table class="table table-bordered">
                          <tr>
-                            <form action="" method="post" enctype="multipart/form-data">
+                            <form action="{{$banner ? url('admin/updatebanner',[$banner->id]) : url('admin/savebanner')}}" method="post" enctype="multipart/form-data">
+                               @csrf
+                               @if($banner)
+                               @method('PUT')
+                               @endif
                                <td style="width:50%">
-                                  <h4>Existing Login Page Banner</h4>
+                                  <h4>Existing Banner</h4>
                                   <p>
-                                     <img src="{{asset('backend/assets/uploads/banner_login.jpg')}}" alt="" style="width: 100%;height:auto;"> 
+                                    @if($banner)
+                                     <img src="{{asset('storage/banner/'.$banner->photo)}}" alt="{{$banner->photo}}" style="width: 100%;height:auto;"> 
+                                    @else
+                                     <img src="{{asset('storage/defaultimage/banner.jpg')}}" alt="" style="width: 100%;height:auto;"> 
+                                    @endif
                                   </p>
                                </td>
                                <td style="width:50%">
-                                  <h4>Change Login Page Banner</h4>
-                                  Select Photo<input type="file" name="photo">
-                                  <input type="submit" class="btn btn-primary btn-xs" value="Change" style="margin-top:10px;" name="form7_1">
+                                  <h4>Change Banner</h4>
+                                  Select Photo<input type="file" name="photo" required>
+                                  <input type="submit" class="btn btn-primary btn-xs" value="{{$banner ? 'Update Banner' : 'Save Banner'}}" style="margin-top:10px;" name="form7_1">
                                </td>
                             </form>
                          </tr>
@@ -635,28 +643,30 @@ Web Settings
                    </div>
                    <!-- PAYMENT METHODS TAB -->
                    <div class="tab-pane" id="tab_9">
-                      <form class="form-horizontal" action="" method="post">
+                      <form class="form-horizontal" action="{{$payementSetting ? url('admin/updatepayement',[$payementSetting->id]) : url('admin/savepayement')}}" method="post">
+                        @csrf
+                        @if($payementSetting)
+                        @method('PUT')
+                        @endif
                          <div class="box box-info">
                             <div class="box-body">
                                <div class="form-group">
                                   <label for="" class="col-sm-2 control-label">PayPal - Business Email </label>
                                   <div class="col-sm-5">
-                                     <input type="text" name="paypal_email" class="form-control" value="admin@ecom.com">
+                                     <input type="text" name="paypal_email" class="form-control" value="{{$payementSetting ? $payementSetting->paypal_email : ''}}">
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-2 control-label">Bank Information </label>
                                   <div class="col-sm-5">
-                                     <textarea name="bank_detail" class="form-control" cols="30" rows="10">Bank Name: WestView Bank
-                                     Account Number: CA100270589600
-                                     Branch Name: CA Branch
-                                     Country: USA</textarea>
+                                     <textarea name="bank_detail" class="form-control" cols="30" rows="10">{{$payementSetting ? $payementSetting->bank_detail : ''}}</textarea>
+
                                   </div>
                                </div>
                                <div class="form-group">
                                   <label for="" class="col-sm-2 control-label"></label>
                                   <div class="col-sm-6">
-                                     <button type="submit" class="btn btn-success pull-left" name="form9">Update</button>
+                                     <button type="submit" class="btn btn-success pull-left" name="form9">{{$payementSetting ? 'Update' : 'Save'}}</button>
                                   </div>
                                </div>
                             </div>
