@@ -10,18 +10,33 @@ Shipping
           <h1>Add Shipping Cost</h1>
        </div>
     </section>
+    @if(Session::has("status"))
+    <section class="content" style="min-height:auto;margin-bottom: -30px;">
+       <div class="row">
+          <div class="col-md-12">
+             <div class="callout callout-success">
+                <p>{{Session::get('status')}}</p>
+             </div>
+          </div>
+       </div>
+    </section>
+    @endif
     <section class="content">
        <div class="row">
           <div class="col-md-12">
-             <form class="form-horizontal" action="" method="post">
+             <form class="form-horizontal" action="{{url('admin/saveshippingcost',[])}}" method="post">
+                @csrf
                 <div class="box box-info">
                    <div class="box-body">
                       <div class="form-group">
                          <label for="" class="col-sm-2 control-label">Select Country <span>*</span></label>
                          <div class="col-sm-4">
-                            <select name="country_id" class="form-control select2">
+                            <select name="country_id" class="form-control select2" required>
                                <option value="">Select a country</option>
-                               <option value="1">Afghanistan</option>
+                               @foreach ($countrys as $country)
+                               <option value="{{$country->country_name}}">{{$country->country_name}}</option>
+                               @endforeach
+                               {{-- <option value="1">Afghanistan</option>
                                <option value="2">Albania</option>
                                <option value="3">Algeria</option>
                                <option value="4">American Samoa</option>
@@ -261,20 +276,20 @@ Shipping
                                <option value="242">Yemen</option>
                                <option value="243">Zaire</option>
                                <option value="244">Zambia</option>
-                               <option value="245">Zimbabwe</option>
+                               <option value="245">Zimbabwe</option> --}}
                             </select>
                          </div>
                       </div>
                       <div class="form-group">
                          <label for="" class="col-sm-2 control-label">Amount <span>*</span></label>
                          <div class="col-sm-4">
-                            <input type="text" class="form-control" name="amount">
+                            <input type="number" class="form-control" name="amount" required>
                          </div>
                       </div>
                       <div class="form-group">
                          <label for="" class="col-sm-2 control-label"></label>
                          <div class="col-sm-6">
-                            <button type="submit" class="btn btn-success pull-left" name="form1">Add</button>
+                            <button type="submit" class="btn btn-success pull-left" name="form1">Save</button>
                          </div>
                       </div>
                    </div>
@@ -303,16 +318,23 @@ Shipping
                          </tr>
                       </thead>
                       <tbody>
+                        @foreach ($shippingcosts as $shippingcost)
                          <tr>
-                            <td>1</td>
-                            <td>Australia</td>
-                            <td>8</td>
+                            <td>{{$shippingcost->id}}</td>
+                            <td>{{$shippingcost->country_id}}</td>
+                            <td>{{$shippingcost->amount}}</td>
                             <td>
-                               <a href="shipping-cost-edit.php?id=3" class="btn btn-primary btn-xs">Edit</a>
-                               <a href="#" class="btn btn-danger btn-xs" data-href="shipping-cost-delete.php?id=3" data-toggle="modal" data-target="#confirm-delete">Delete</a>
+                               <a href="{{url('admin/editshippingcost',[$shippingcost->id])}}" class="btn btn-primary btn-xs">Edit</a>
+                               {{-- <a href="#" class="btn btn-danger btn-xs" data-href="{{url('admin/deleteshippingcost/'.$shippingcost->id)}}" data-toggle="modal" data-target="#confirm-delete">Delete</a> --}}
+                               <form action="{{url('admin/deleteshippingcost',['id'=>$shippingcost->id])}}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                               </form>
                             </td>
                          </tr>
-                         <tr>
+                         @endforeach
+                         {{-- <tr>
                             <td>2</td>
                             <td>Pakistan</td>
                             <td>10</td>
@@ -338,7 +360,7 @@ Shipping
                                <a href="shipping-cost-edit.php?id=4" class="btn btn-primary btn-xs">Edit</a>
                                <a href="#" class="btn btn-danger btn-xs" data-href="shipping-cost-delete.php?id=4" data-toggle="modal" data-target="#confirm-delete">Delete</a>
                             </td>
-                         </tr>
+                         </tr> --}}
                       </tbody>
                    </table>
                 </div>
@@ -353,19 +375,23 @@ Shipping
     <section class="content">
     <div class="row">
     <div class="col-md-12">
-    <form class="form-horizontal" action="" method="post">
+    <form class="form-horizontal" action="{{$shippingcostrest ? url('admin/updaterestamount',[$shippingcostrest->id] ) : url('admin/saverestamount',[]) }}" method="post">
+    @csrf
+    @if($shippingcostrest)
+    @method('PUT')
+    @endif
     <div class="box box-info">
     <div class="box-body">
     <div class="form-group">
     <label for="" class="col-sm-2 control-label">Amount <span>*</span></label>
     <div class="col-sm-4">
-    <input type="text" class="form-control" name="amount" value="100">
+    <input type="text" class="form-control" name="amount" value="{{$shippingcostrest ? $shippingcostrest->amount : ''}}" required>
     </div>
     </div>
     <div class="form-group">
     <label for="" class="col-sm-2 control-label"></label>
     <div class="col-sm-6">
-    <button type="submit" class="btn btn-success pull-left" name="form2">Update</button>
+    <button type="submit" class="btn btn-success pull-left" name="form2">{{$shippingcostrest ? 'Update' : 'Save'}}</button>
     </div>
     </div>
     </div>

@@ -11,26 +11,38 @@
                   <h1>Edit Shipping Cost</h1>
                </div>
                <div class="content-header-right">
-                  <a href="shipping-cost.php" class="btn btn-primary btn-sm">View All</a>
+                  <a href="{{url('admin/shippingcost')}}" class="btn btn-primary btn-sm">View All</a>
                </div>
             </section>
+            @if(Session::has("status"))
+            <section class="content" style="min-height:auto;margin-bottom: -30px;">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="callout callout-success">
+                        <p>{{Session::get('status')}}</p>
+                     </div>
+                  </div>
+               </div>
+            </section>
+            @endif
             <section class="content">
                <div class="row">
                   <div class="col-md-12">
-                     <form class="form-horizontal" action="" method="post">
+                     <form class="form-horizontal" action="{{url('admin/updateshippingcost',['id'=>$shippingcost->id])}}" method="post">
+                        @csrf
+                        @method('PUT')
                         <div class="box box-info">
                            <div class="box-body">
                               <div class="form-group">
                                  <label for="" class="col-sm-2 control-label">Select Country <span>*</span></label>
                                  <div class="col-sm-4">
-                                    <select name="country_id" class="form-control select2">
+                                       <select name="country_id" class="form-control select2">
                                        <option value="">Select a country</option>
-                                       <option value="1" >Afghanistan</option>
-                                       <option value="2" >Albania</option>
-                                       <option value="3" >Algeria</option>
-                                       <option value="4" >American Samoa</option>
-                                       <option value="5" >Andorra</option>
-                                       <option value="6" >Angola</option>
+                                       @foreach ($countrys as $country)
+                                       <option value="{{$country->country_name}}" >{{$country->country_name}}</option>
+                                       @endforeach
+                                    
+                                       {{-- <option value="6" >Angola</option>
                                        <option value="7" >Anguilla</option>
                                        <option value="8" >Antarctica</option>
                                        <option value="9" >Antigua and Barbuda</option>
@@ -269,14 +281,14 @@
                                        <option value="242" >Yemen</option>
                                        <option value="243" >Zaire</option>
                                        <option value="244" >Zambia</option>
-                                       <option value="245" >Zimbabwe</option>
+                                       <option value="245" >Zimbabwe</option> --}}
                                     </select>
                                  </div>
                               </div>
                               <div class="form-group">
                                  <label for="" class="col-sm-2 control-label">Amount <span>*</span></label>
                                  <div class="col-sm-4">
-                                    <input type="text" class="form-control" name="amount" value="8">
+                                    <input type="text" class="form-control" name="amount" value="{{$shippingcost->amount}}">
                                  </div>
                               </div>
                               <div class="form-group">

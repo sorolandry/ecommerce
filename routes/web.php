@@ -67,6 +67,7 @@ Route::get('admin/addendlevelcategory', [AdminController::class, 'viewaddendleve
 Route::get('admin/addproduct', [AdminController::class, 'viewaddproduct']); 
 Route::get('admin/addservice', [AdminController::class, 'viewaddservice']); 
 Route::get('admin/addslider', [AdminController::class, 'viewaddslider']); 
+Route::get('admin/addtoplevelcategory', [AdminController::class, 'viewaddtoplevelcategory']); 
 Route::get('admin/addsubscriber', [AdminController::class, 'viewaddsubscriber']); 
 Route::get('admin/country', [AdminController::class, 'viewcountry']); 
 Route::get('admin/editcountry', [AdminController::class, 'vieweditcountry']); 
@@ -122,3 +123,37 @@ Route::post('admin/savecolor', [ShopController::class, 'savecolor']);
 Route::get('admin/editcolor/{id}', [ShopController::class, 'vieweditcolor']);
 Route::put('admin/updatecolor/{id}', [ShopController::class, 'updatecolor']); 
 Route::delete('admin/deletecolor/{id}', [ShopController::class, 'deletecolor']); 
+
+Route::post('admin/savecountry', [ShopController::class, 'savecountry']);
+Route::get('admin/editcountry/{id}', [ShopController::class, 'vieweditcountry']);
+Route::put('admin/updatecountry/{id}', [ShopController::class, 'updatecountry']); 
+Route::delete('admin/deletecountry/{id}', [ShopController::class, 'deletecountry']); 
+
+Route::post('admin/saveshippingcost', [ShopController::class, 'saveshippingcost']);
+Route::get('admin/editshippingcost/{id}', [ShopController::class, 'vieweditshippingcost']);
+Route::put('admin/updateshippingcost/{id}', [ShopController::class, 'updateshippingcost']); 
+Route::delete('admin/deleteshippingcost/{id}', [ShopController::class, 'deleteshippingcost']); 
+
+Route::post('admin/saverestamount', [ShopController::class, 'saverestamount']);
+Route::get('admin/editrestamount/{id}', [ShopController::class, 'vieweditrestamount']);
+Route::put('admin/updaterestamount/{id}', [ShopController::class, 'updaterestamount']); 
+
+Route::post('admin/savetoplevelcategory', [ShopController::class, 'savetoplevelcategory']);
+Route::get('admin/edittoplevelcategory/{id}', [ShopController::class, 'viewedittoplevelcategory']);
+Route::put('admin/updatetoplevelcategory/{id}', [ShopController::class, 'updatetoplevelcategory']); 
+Route::delete('admin/deletetoplevelcategory/{id}', [ShopController::class, 'deletetoplevelcategory']); 
+
+Route::post('admin/savemidlevelcategory', [ShopController::class, 'savemidlevelcategory']);
+Route::get('admin/editmidlevelcategory/{id}', [ShopController::class, 'vieweditmidlevelcategory']);
+Route::put('admin/updatemidlevelcategory/{id}', [ShopController::class, 'updatemidlevelcategory']); 
+Route::delete('admin/deletemidlevelcategory/{id}', [ShopController::class, 'deletemidlevelcategory']); 
+
+Route::post('admin/saveendlevelcategory', [ShopController::class, 'saveendlevelcategory']);
+Route::get('admin/editendlevelcategory/{id}', [ShopController::class, 'vieweditendlevelcategory']);
+Route::put('admin/updateendlevelcategory/{id}', [ShopController::class, 'updateendlevelcategory']); 
+Route::delete('admin/deleteendlevelcategory/{id}', [ShopController::class, 'deleteendlevelcategory']); 
+
+Route::post('admin/savetoplevelcategory', [ShopController::class, 'savetoplevelcategory']);
+Route::get('admin/edittoplevelcategory/{id}', [ShopController::class, 'viewedittoplevelcategory']);
+Route::put('admin/updatetoplevelcategory/{id}', [ShopController::class, 'updatetoplevelcategory']); 
+Route::delete('admin/deletetoplevelcategory/{id}', [ShopController::class, 'deletetoplevelcategory']); 
