@@ -13,6 +13,17 @@ Product Management
               <a href="{{url('admin/addproduct',[])}}" class="btn btn-primary btn-sm">Add Product</a>
            </div>
         </section>
+        @if(Session::has("status"))
+            <section class="content" style="min-height:auto;margin-bottom: -30px;">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="callout callout-success">
+                        <p>{{Session::get('status')}}</p>
+                     </div>
+                  </div>
+               </div>
+            </section>
+            @endif
         <section class="content">
            <div class="row">
               <div class="col-md-12">
@@ -34,26 +45,33 @@ Product Management
                              </tr>
                           </thead>
                           <tbody>
+                             @foreach($products as $product)
                              <tr>
-                                <td>1</td>
+                                <td>{{$product->id}}</td>
                                 <td style="width:82px;"><img src="{{asset('backend/uploads/product-featured-102.jpg')}}" alt="Women's Plus-Size Shirt Dress with Gold Hardware" style="width:80px;"></td>
-                                <td>Women's Plus-Size Shirt Dress with Gold Hardware</td>
-                                <td>$190</td>
-                                <td>$169</td>
-                                <td>112</td>
+                                <td>{{$product->p_name}}</td>
+                                <td>{{$product->p_old_price}}</td>
+                                <td>{{$product->p_current_price}}</td>
+                                <td>{{$product->p_quantity}}</td>
                                 <td>
-                                   <span class="badge badge-success" style="background-color:green;">Yes</span>									
+                                   <span class="badge badge-success" style="background-color:{{$product->p_is_featured ? 'green' : 'red'}};">{{$product->p_is_featured ? 'Yes' : 'No'}}</span>									
                                 </td>
                                 <td>
-                                   <span class="badge badge-success" style="background-color:green;">Yes</span>									
+                                   <span class="badge badge-success" style="background-color:{{$product->p_is_active ? 'green' : 'red'}};">{{$product->p_is_active ? 'Yes' : 'No'}}</span>									
                                 </td>
-                                <td>Women<br>Clothing<br>Dresses</td>
-                                <td>										
-                                   <a href="product-edit.php?id=102" class="btn btn-primary btn-xs">Edit</a>
-                                   <a href="#" class="btn btn-danger btn-xs" data-href="product-delete.php?id=102" data-toggle="modal" data-target="#confirm-delete">Delete</a>  
+                                <td>{{$product->p_category}}</td>
+                                <td style="display: flex; gap: 10px;">										
+                                   <a href="{{url('admin/editproduct/'.$product->id)}}" class="btn btn-primary btn-xs">Edit</a>
+                                   {{-- <a href="#" class="btn btn-danger btn-xs" data-href="{{url('admin/deleteproduct/'.$product->id)}}" data-toggle="modal" data-target="#confirm-delete">Delete</a>   --}}
+                                   <form action="{{url('admin/deleteproduct/'.$product->id)}}" method="post" style="display: inline-block;">
+                                       @csrf
+                                       @method('DELETE')
+                                       <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                   </form>
                                 </td>
                              </tr>
-                             <tr>
+                             @endforeach
+                             {{-- <tr>
                                 <td>2</td>
                                 <td style="width:82px;"><img src="{{asset('backend/uploads/product-featured-101.jpg')}}" alt="Digital Infrared Thermometer for Adults and Kids" style="width:80px;"></td>
                                 <td>Digital Infrared Thermometer for Adults and Kids</td>
@@ -413,7 +431,7 @@ Product Management
                                    <a href="product-edit.php?id=83" class="btn btn-primary btn-xs">Edit</a>
                                    <a href="#" class="btn btn-danger btn-xs" data-href="product-delete.php?id=83" data-toggle="modal" data-target="#confirm-delete">Delete</a>  
                                 </td>
-                             </tr>
+                             </tr> --}}
                           </tbody>
                        </table>
                     </div>

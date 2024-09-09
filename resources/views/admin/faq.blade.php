@@ -10,9 +10,20 @@ FAQ
             <h1>View FAQs</h1>
         </div>
         <div class="content-header-right">
-            <a href="faq-add.php" class="btn btn-primary btn-sm">Add FAQ</a>
+            <a href="{{url('admin/addfaq')}}" class="btn btn-primary btn-sm">Add FAQ</a>
         </div>
     </section>
+    @if(Session::has("status"))
+                <section class="content" style="min-height:auto;margin-bottom: -30px;">
+                   <div class="row">
+                      <div class="col-md-12">
+                         <div class="callout callout-success">
+                            <p>{{Session::get('status')}}</p>
+                         </div>
+                      </div>
+                   </div>
+                </section>
+            @endif
     <section class="content">
         <div class="row">
             <div class="col-md-12">
@@ -27,16 +38,23 @@ FAQ
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach ($faqs as $faq)
                                 <tr>
-                                    <td>1</td>
-                                    <td>How to find an item?</td>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td>{{$faq->faq_title}}</td>
                                     <td>
-                                        <a href="faq-edit.php?id=1" class="btn btn-primary btn-xs">Edit</a>
-                                        <a href="#" class="btn btn-danger btn-xs" data-href="faq-delete.php?id=1"
-                                            data-toggle="modal" data-target="#confirm-delete">Delete</a>
+                                        <a href="{{url('admin/editfaq',[$faq->id])}}" class="btn btn-primary btn-xs">Edit</a>
+                                        {{-- <a href="#" class="btn btn-danger btn-xs" data-href="{{url('admin/deletefaq',[$faq->id])}}"
+                                            data-toggle="modal" data-target="#confirm-delete">Delete</a> --}}
+                                        <form action="{{url('admin/deletefaq',[$faq->id])}}" method="post">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                        </form>
                                     </td>
                                 </tr>
-                                <tr>
+                                @endforeach
+                                {{-- <tr>
                                     <td>2</td>
                                     <td>What is your return policy?</td>
                                     <td>
@@ -71,7 +89,7 @@ FAQ
                                         <a href="#" class="btn btn-danger btn-xs" data-href="faq-delete.php?id=5"
                                             data-toggle="modal" data-target="#confirm-delete">Delete</a>
                                     </td>
-                                </tr>
+                                </tr> --}}
                             </tbody>
                         </table>
                     </div>

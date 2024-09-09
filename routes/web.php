@@ -157,3 +157,23 @@ Route::post('admin/savetoplevelcategory', [ShopController::class, 'savetoplevelc
 Route::get('admin/edittoplevelcategory/{id}', [ShopController::class, 'viewedittoplevelcategory']);
 Route::put('admin/updatetoplevelcategory/{id}', [ShopController::class, 'updatetoplevelcategory']); 
 Route::delete('admin/deletetoplevelcategory/{id}', [ShopController::class, 'deletetoplevelcategory']); 
+
+Route::post('admin/saveproduct', [ShopController::class, 'saveproduct']);
+Route::get('admin/editproduct/{id}', [ShopController::class, 'vieweditproduct']);
+Route::put('admin/updateproduct/{id}', [ShopController::class, 'updateproduct']); 
+Route::delete('admin/deleteproduct/{id}', [ShopController::class, 'deleteproduct']); 
+
+Route::post('admin/saveslider', [ShopController::class, 'saveslider']);
+Route::get('admin/editslider/{id}', [ShopController::class, 'vieweditslider']);
+Route::put('admin/updateslider/{id}', [ShopController::class, 'updateslider']); 
+Route::delete('admin/deleteslider/{id}', [ShopController::class, 'deleteslider']); 
+
+Route::post('admin/saveservice', [ShopController::class, 'saveservice']);
+Route::get('admin/editservice/{id}', [ShopController::class, 'vieweditservice']);
+Route::put('admin/updateservice/{id}', [ShopController::class, 'updateservice']); 
+Route::delete('admin/deleteservice/{id}', [ShopController::class, 'deleteservice']); 
+
+Route::post('admin/savefaq', [ShopController::class, 'savefaq']);
+Route::get('admin/editfaq/{id}', [ShopController::class, 'vieweditfaq']);
+Route::put('admin/updatefaq/{id}', [ShopController::class, 'updatefaq']); 
+Route::delete('admin/deletefaq/{id}', [ShopController::class, 'deletefaq']); 

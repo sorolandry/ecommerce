@@ -25,6 +25,9 @@ use App\Models\Toplevelcategory;
 use App\Models\Midlevelcategory;
 use App\Models\Endlevelcategory;
 use App\Models\Product;
+use App\Models\Slider;
+use App\Models\Service;
+use App\Models\Faq;
 class AdminController extends Controller
 {
     public function viewadmindashboard()
@@ -68,7 +71,8 @@ class AdminController extends Controller
     }
     public function viewfaq()
     {
-        return view('admin.faq');
+        $faqs = Faq::get();
+        return view('admin.faq',compact('faqs'));
     }
     public function viewordermanagement()
     {
@@ -76,13 +80,19 @@ class AdminController extends Controller
     }
     public function viewproductmanagement()
     {
-        return view('admin.productmanagement');
+        $products = Product::get();
+        $toplevelcategories = Toplevelcategory::get();
+        $midlevelcategories = Midlevelcategory::get();
+        $endlevelcategories = Endlevelcategory::get();
+        return view('admin.productmanagement',compact('products','toplevelcategories','midlevelcategories','endlevelcategories'));
     }
     public function viewmanagesliders(){
-        return view('admin.managesliders');
+        $sliders = Slider::get();   
+        return view('admin.managesliders',compact('sliders'));
     }
     public function viewservices(){
-        return view('admin.services');
+        $services = Service::get();
+        return view('admin.services',compact('services'));
     }
     public function viewsocialmedia(){
         return view('admin.socialmedia');
@@ -116,7 +126,8 @@ class AdminController extends Controller
         return view('admin.addcountry');
     }
     public function viewaddfaq(){
-        return view('admin.addfaq');
+        $faqs = Faq::get();
+        return view('admin.addfaq',compact('faqs'));
     }
     public function viewaddmidlevelcategory(){
         $toplevelcategories = Toplevelcategory::get();
@@ -126,8 +137,8 @@ class AdminController extends Controller
     public function viewaddendlevelcategory(){
     $endlevelcategories = Endlevelcategory::get();
     $toplevelcategories = Toplevelcategory::get();
-    $midlevelcategories = Midlevelcategory::get();
-        return view('admin.addendlevelcategory',compact('toplevelcategories','midlevelcategories'));
+    $midlevelcategories = Midlevelcategory::get(); 
+        return view('admin.addendlevelcategory',compact('toplevelcategories','midlevelcategories','endlevelcategories'));
     }
     public function viewendlevelcategory()
 {
@@ -144,16 +155,21 @@ public function viewedittoplevelcategory(){
 }
     public function viewaddproduct(){
         $products = Product::get();
+        
         $toplevelcategories = Toplevelcategory::get();
         $midlevelcategories = Midlevelcategory::get();
         $endlevelcategories = Endlevelcategory::get();
-        return view('admin.addproduct',compact('products','toplevelcategories','midlevelcategories','endlevelcategories'));
+        $sizes = Size::get();
+        $colors = Color::get();
+        return view('admin.addproduct',compact('products','toplevelcategories','midlevelcategories','endlevelcategories','sizes','colors'));
     }
     public function viewaddservice(){
-        return view('admin.addservice');
+        $services = Service::get();
+        return view('admin.addservice',compact('services'));
     }
     public function viewaddslider(){
-        return view('admin.addslider');
+        $sliders = Slider::get();
+        return view('admin.addslider',compact('sliders'));
     }
     public function viewaddsubscriber(){
         return view('admin.addsubscriber');
@@ -175,7 +191,8 @@ public function viewedittoplevelcategory(){
         return view('admin.editendlevelcategory',compact('endlevelcategories','toplevelcategories','midlevelcategories'));
     }
     public function vieweditfaq(){
-        return view('admin.editfaq');
+        $faqs = Faq::get(); 
+        return view('admin.editfaq',compact('faqs'));
     }
     public function viewmidlevelcategory(){
         $midlevelcategories = Midlevelcategory::get();
@@ -188,16 +205,23 @@ public function viewedittoplevelcategory(){
         return view('admin.editmidlevelcategory',compact('midlevelcategories','toplevelcategories'));
     }
     public function vieweditproduct(){
-        return view('admin.editproduct');
+        $products = Product::get();
+        $toplevelcategories = Toplevelcategory::get();
+        $midlevelcategories = Midlevelcategory::get();
+        $endlevelcategories = Endlevelcategory::get();
+        return view('admin.editproduct',compact('products','toplevelcategories','midlevelcategories','endlevelcategories'));
     }
     public function vieweditprofile(){
         return view('admin.editprofile');
     }
     public function vieweditservice(){
-        return view('admin.editservice');
+        $services = Service::get();
+        
+        return view('admin.editservice',compact('services'));
     }
     public function vieweditslider(){
-        return view('admin.editslider');
+        $sliders = Slider::get();   
+        return view('admin.editslider',compact('sliders'));
     }
     public function vieweditshippingcost(){
         return view('admin.editshippingcost');

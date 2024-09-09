@@ -3,11 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Models\Slider;
 class ClientController extends Controller
 {
     public function viewhome(){
-        return view('client.home');
+        $sliders = Slider::all();
+        $increment = 0;
+        $increment1=0;
+        return view('client.home', compact('sliders', 'increment', 'increment1'));
     }
     public function viewabout(){
         return view('client.about');

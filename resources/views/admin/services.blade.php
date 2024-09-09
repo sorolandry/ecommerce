@@ -11,9 +11,20 @@ Manage Services
                   <h1>View Services</h1>
                </div>
                <div class="content-header-right">
-                  <a href="service-add.php" class="btn btn-primary btn-sm">Add Service</a>
+                  <a href="{{url('admin/addservice')}}" class="btn btn-primary btn-sm">Add Service</a>
                </div>
             </section>
+            @if(Session::has("status"))
+            <section class="content" style="min-height:auto;margin-bottom: -30px;">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="callout callout-success">
+                        <p>{{Session::get('status')}}</p>
+                     </div>
+                  </div>
+               </div>
+            </section>
+        @endif
             <section class="content">
                <div class="row">
                   <div class="col-md-12">
@@ -30,17 +41,24 @@ Manage Services
                                  </tr>
                               </thead>
                               <tbody>
+                                 @foreach ($services as $service)
                                  <tr>
-                                    <td>1</td>
-                                    <td style="width:130px;"><img src="{{ asset('backend/uploads/service-5.png') }}" alt="Easy Returns" style="width:120px;"></td>
-                                    <td>Easy Returns</td>
-                                    <td>Return any item before 15 days!</td>
+                                    <td>{{$loop->iteration}}</td>
+                                    <td style="width:130px;"><img src="{{asset('storage/serviceimages/'.$service->photo) }}" alt="{{$service->photo}}" style="width:120px;"></td>
+                                    <td>{{$service->title}}</td>
+                                    <td>{{$service->content}}</td>
                                     <td>										
-                                       <a href="service-edit.php?id=5" class="btn btn-primary btn-xs">Edit</a>
-                                       <a href="#" class="btn btn-danger btn-xs" data-href="service-delete.php?id=5" data-toggle="modal" data-target="#confirm-delete">Delete</a>  
+                                       <a href="{{url('admin/editservice',[$service->id])}}" class="btn btn-primary btn-xs">Edit</a>
+                                       {{-- <a href="#" class="btn btn-danger btn-xs" data-href="{{url('admin/deleteservice',[$service->id])}}" data-toggle="modal" data-target="#confirm-delete">Delete</a>   --}}
+                                       <form action="{{url('admin/deleteservice',[$service->id])}}" method="post" style="display: inline-block;">
+                                          @csrf
+                                          @method('DELETE')
+                                          <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                       </form>
                                     </td>
                                  </tr>
-                                 <tr>
+                                 @endforeach
+                                 {{-- <tr>
                                     <td>2</td>
                                     <td style="width:130px;"><img src="{{ asset('backend/uploads/service-6.png') }}" alt="Free Shipping" style="width:120px;"></td>
                                     <td>Free Shipping</td>
@@ -89,7 +107,7 @@ Manage Services
                                        <a href="service-edit.php?id=10" class="btn btn-primary btn-xs">Edit</a>
                                        <a href="#" class="btn btn-danger btn-xs" data-href="service-delete.php?id=10" data-toggle="modal" data-target="#confirm-delete">Delete</a>  
                                     </td>
-                                 </tr>
+                                 </tr> --}}
                               </tbody>
                            </table>
                         </div>

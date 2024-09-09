@@ -10,9 +10,20 @@ Manage Sliders
               <h1>View Sliders</h1>
            </div>
            <div class="content-header-right">
-              <a href="slider-add.php" class="btn btn-primary btn-sm">Add Slider</a>
+              <a href="{{url('admin/addslider',[])}}" class="btn btn-primary btn-sm">Add Slider</a>
            </div>
         </section>
+        @if(Session::has("status"))
+        <section class="content" style="min-height:auto;margin-bottom: -30px;">
+           <div class="row">
+              <div class="col-md-12">
+                 <div class="callout callout-success">
+                    <p>{{Session::get('status')}}</p>
+                 </div>
+              </div>
+           </div>
+        </section>
+        @endif
         <section class="content">
            <div class="row">
               <div class="col-md-12">
@@ -32,20 +43,27 @@ Manage Sliders
                              </tr>
                           </thead>
                           <tbody>
+                             @foreach($sliders as $slider)
                              <tr>
-                                <td>1</td>
-                                <td style="width:150px;"><img src="{{asset('backend/uploads/slider-1.png')}}" alt="Welcome to Ecommerce PHP" style="width:140px;"></td>
-                                <td>Welcome to Ecommerce PHP</td>
-                                <td>Shop Online for Latest Women Accessories</td>
-                                <td>View Women Accessories</td>
-                                <td>product-category.php?id=4&type=mid-category</td>
-                                <td>Center</td>
+                                <td>{{$loop->iteration}}</td>
+                                <td style="width:150px;"><img src="{{asset('storage/sliderimages/'.$slider->photo)}}" alt="{{$slider->heading}}" style="width:140px;"></td>
+                                <td>{{$slider->heading}}</td>
+                                <td>{{$slider->content}}</td>
+                                <td>{{$slider->button_text}}</td>
+                                <td>{{$slider->button_url}}</td>
+                                <td>{{$slider->position}}</td>
                                 <td>										
-                                   <a href="slider-edit.php?id=1" class="btn btn-primary btn-xs">Edit</a>
-                                   <a href="#" class="btn btn-danger btn-xs" data-href="slider-delete.php?id=1" data-toggle="modal" data-target="#confirm-delete">Delete</a>  
+                                   <a href="{{url('admin/editslider',[$slider->id])}}" class="btn btn-primary btn-xs">Edit</a>
+                                   {{-- <a href="#" class="btn btn-danger btn-xs" data-href="{{url('admin/deleteslider',[$slider->id])}}" data-toggle="modal" data-target="#confirm-delete">Delete</a>   --}}
+                                   <form action="{{url('admin/deleteslider',[$slider->id])}}" method="post">   
+                                       @csrf
+                                       @method('DELETE')
+                                       <button type="submit" class="btn btn-danger btn-xs">Delete</button>
+                                   </form>
                                 </td>
                              </tr>
-                             <tr>
+                             @endforeach
+                             {{-- <tr>
                                 <td>2</td>
                                 <td style="width:150px;"><img src="{{asset('backend/uploads/slider-2.jpg')}}" alt="50% Discount on All Products" style="width:140px;"></td>
                                 <td>50% Discount on All Products</td>
@@ -70,7 +88,7 @@ Manage Sliders
                                    <a href="slider-edit.php?id=3" class="btn btn-primary btn-xs">Edit</a>
                                    <a href="#" class="btn btn-danger btn-xs" data-href="slider-delete.php?id=3" data-toggle="modal" data-target="#confirm-delete">Delete</a>  
                                 </td>
-                             </tr>
+                             </tr> --}}
                           </tbody>
                        </table>
                     </div>

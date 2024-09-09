@@ -12,6 +12,9 @@ use App\Models\TopLevelCategory;
 use App\Models\Midlevelcategory;
 use App\Models\Endlevelcategory;
 use App\Models\Product;
+use App\Models\Slider;
+use App\Models\Service;
+use App\Models\Faq;
 class ShopController extends Controller
 {
     //
@@ -203,6 +206,378 @@ class ShopController extends Controller
         $endlevelcategories = Endlevelcategory::find($id);
         $endlevelcategories->delete();
         return back()->with('status','End level category deleted successfully');
+    }
+    public function saveproduct(Request $request)
+    {
+        $this->validate($request,[
+            'tcat_id' => 'required|string',
+            'mcat_id' => 'required|string',
+            'ecat_id' => 'required|string',
+            'p_name' => 'required|string',
+            'p_old_price' => 'required|integer',
+            // 'p_price' => 'required|integer',
+            'p_current_price' => 'required|integer',
+            'size' => 'required|array',
+            'size.*' => 'required|string',
+            'color' => 'required|array',
+            'color.*' => 'required|string',
+            'p_qty' => 'required|integer',
+            'p_featured_photo' => 'required|image|nullable|max:2048',
+            'photo' => 'required|array',
+            'photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'p_description' => 'required|string',
+            'p_short_description' => 'required|string',
+            'featured' => 'required|string',
+            'p_condition' => 'required|string',
+            'p_return_policy' => 'required|string',
+            'p_is_featured' => 'required|string',
+            'p_is_active' => 'required|string',
+        ]);
+        $imagedata="";
+        $sizes=$request->input('size');
+        $colors=$request->input('color');
+        $photos=$request->file('photo');
+        $sizedata="";
+        $colordata="";
+        $photodata="";
+        
+//getting sizes
+foreach ($sizes as $size){
+    $sizedata=$sizedata.$size."*";
+    
+}
+
+//getting sizes
+foreach ($colors as $color){
+    $colordata=$colordata.$color."*";
+    
+}
+
+if ($request->hasFile('photo')) {
+    $photos = $request->file('photo');
+    $imagedata = "";
+
+    foreach ($photos as $photo) {
+        if ($photo->isValid()) {
+            $fileNameWithExt = $photo->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $fileExt = $photo->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $fileExt;
+            $imagedata .= $fileNameToStore . "*";
+            $path = $photo->storeAs('public/productimages', $fileNameToStore);
+        }
+    }
+}
+
+// 1 : File name with extension
+$fileNameWithExt = $request->file('p_featured_photo')->getClientOriginalName();
+// print_r($fileNameWithExt);
+// 2 : File name without extension
+$fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+// print_r($fileName);
+
+// 3 : Get just extension
+$extension = $request->file('p_featured_photo')->getClientOriginalExtension();
+// 4 : File name to store
+$fileNameToStore = $fileName.'_'.time().'.'.$extension;
+// 5 : Upload Image
+$path = $request->file('p_featured_photo')->storeAs('public/productimages',$fileNameToStore);
+
+
+        
+        $product = new Product();
+        $product->tcat_id = $request->input('tcat_id');
+        $product->mcat_id = $request->input('mcat_id');
+        $product->ecat_id = $request->input('ecat_id');
+        $product->p_name = $request->input('p_name');
+        $product->p_old_price = $request->input('p_old_price');
+        // $product->p_price = $request->input('p_price');
+        $product->p_current_price = $request->input('p_current_price');
+        $product->size = $sizedata;
+        $product->color = $colordata;
+        $product->p_qty = $request->input('p_qty');
+        $product->p_featured_photo = $fileNameToStore;
+        $product->photo = $imagedata;
+        $product->p_description = $request->input('p_description');
+        $product->p_short_description = $request->input('p_short_description');
+        $product->featured = $request->input('featured');
+        $product->p_condition = $request->input('p_condition');
+        $product->p_return_policy = $request->input('p_return_policy');
+        $product->p_is_featured = $request->input('p_is_featured');
+        $product->p_is_active = $request->input('p_is_active');
+        $product->save();
+        return back()->with('status','Product added successfully');
+    }
+    public function vieweditproduct($id){
+        $product = Product::find($id);
+        return view('admin.editproduct',compact('product'));
+    }
+    public function updateproduct(Request $request,$id){
+        $this->validate($request,[  
+            'tcat_id' => 'required|string',
+            'mcat_id' => 'required|string',
+            'ecat_id' => 'required|string',
+            'p_name' => 'required|string',
+            'p_old_price' => 'required|integer',
+            // 'p_price' => 'required|integer',
+            'p_current_price' => 'required|integer',
+            'size' => 'required|array',
+            'size.*' => 'required|string',
+            'color' => 'required|array',
+            'color.*' => 'required|string',
+            'p_qty' => 'required|integer',
+            'p_featured_photo' => 'required|image|nullable|max:2048',
+            'photo' => 'required|array',
+            'photo.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'p_description' => 'required|string',
+            'p_short_description' => 'required|string',
+            'featured' => 'required|string',
+            'p_condition' => 'required|string',
+            'p_return_policy' => 'required|string',
+            'p_is_featured' => 'required|string',
+            'p_is_active' => 'required|string',
+        ]);
+        $imagedata="";
+        $sizes=$request->input('size');
+        $colors=$request->input('color');
+        $photos=$request->file('photo');
+        $sizedata="";
+        $colordata="";
+        $photodata="";
+        
+//getting sizes 
+foreach ($sizes as $size){
+    $sizedata=$sizedata.$size."*";
+    
+}
+
+//getting sizes
+foreach ($colors as $color){
+    $colordata=$colordata.$color."*";
+    
+}
+
+if ($request->hasFile('photo')) {
+    $photos = $request->file('photo');
+    $imagedata = "";
+
+    foreach ($photos as $photo) {
+        if ($photo->isValid()) {
+            $fileNameWithExt = $photo->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $fileExt = $photo->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $fileExt;
+            $imagedata .= $fileNameToStore . "*";
+            $path = $photo->storeAs('public/productimages', $fileNameToStore);
+        }
+    }
+}
+
+// 1 : File name with extension
+$fileNameWithExt = $request->file('p_featured_photo')->getClientOriginalName();
+// print_r($fileNameWithExt);
+// 2 : File name without extension
+$fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+// print_r($fileName);
+
+// 3 : Get just extension
+$extension = $request->file('p_featured_photo')->getClientOriginalExtension();
+// 4 : File name to store
+$fileNameToStore = $fileName.'_'.time().'.'.$extension;
+// 5 : Upload Image
+$path = $request->file('p_featured_photo')->storeAs('public/productimages',$fileNameToStore);
+
+        $product = Product::find($id);
+        $product->tcat_id = $request->input('tcat_id');
+        $product->mcat_id = $request->input('mcat_id');
+        $product->ecat_id = $request->input('ecat_id');
+        $product->p_name = $request->input('p_name');
+        $product->p_old_price = $request->input('p_old_price');
+        $product->p_price = $request->input('p_price');
+        $product->p_current_price = $request->input('p_current_price');
+        $product->size = $sizedata;
+        $product->color = $colordata;
+        $product->p_qty = $request->input('p_qty');
+        $product->p_featured_photo = $fileNameToStore;
+        $product->photo = $imagedata;
+        $product->p_description = $request->input('p_description');
+        $product->p_short_description = $request->input('p_short_description');
+        $product->featured = $request->input('featured');
+        $product->p_condition = $request->input('p_condition');
+        $product->p_return_policy = $request->input('p_return_policy');
+        $product->p_is_featured = $request->input('p_is_featured');
+        $product->p_is_active = $request->input('p_is_active');
+        $product->update();
+        return back()->with('status','Product updated successfully');
+    }
+    public function deleteproduct($id){
+        $product = Product::find($id);
+        $product->delete();
+        return back()->with('status','Product deleted successfully');
+    }
+    public function saveslider(Request $request)
+    {
+        // 1 : File name with extension
+        $fileNameWithExt = $request->file('photo')->getClientOriginalName();
+        // print_r($fileNameWithExt);
+        // 2 : File name without extension
+        $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        // print_r($fileName);
+
+        // 3 : Get just extension
+        $extension = $request->file('photo')->getClientOriginalExtension();
+        // 4 : File name to store
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        // 5 : Upload Image
+        $path = $request->file('photo')->storeAs('public/sliderimages',$fileNameToStore);
+        
+        $slider = new Slider();
+        $slider->photo = $fileNameToStore;
+        $slider->heading = $request->input('heading');
+        $slider->content = $request->input('content');
+        $slider->button_text = $request->input('button_text');
+        $slider->button_link = $request->input('button_link');
+        $slider->position = $request->input('position');
+        $slider->save();
+        return back()->with('status','Slider added successfully');
+    }
+    public function vieweditslider($id){
+        $slider = Slider::find($id);
+        return view('admin.editslider',compact('slider'));
+    }
+    public function updateslider(Request $request,$id){
+        $this->validate($request,[
+            'photo' => 'required|image|nullable|max:2048',
+            'heading' => 'required|string',
+            'content' => 'required|string',
+            'button_text' => 'required|string',
+            'button_link' => 'required|string',
+            'position' => 'required|integer',
+        ]);
+        // 1 : File name with extension
+        $fileNameWithExt = $request->file('photo')->getClientOriginalName();
+        // print_r($fileNameWithExt);
+        // 2 : File name without extension
+        $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        // print_r($fileName);
+
+        // 3 : Get just extension
+        $extension = $request->file('photo')->getClientOriginalExtension();
+        // 4 : File name to store
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        // 5 : Upload Image
+        $path = $request->file('photo')->storeAs('public/sliderimages',$fileNameToStore);
+        
+        $slider = Slider::find($id);
+        $slider->photo = $fileNameToStore;
+        $slider->heading = $request->input('heading');
+        $slider->content = $request->input('content');
+        $slider->button_text = $request->input('button_text');
+        $slider->button_link = $request->input('button_link');
+        $slider->position = $request->input('position');
+        $slider->update();
+        return back()->with('status','Slider updated successfully');
+    }
+    public function deleteslider($id){
+        $slider = Slider::find($id);
+        $slider->delete();
+        return back()->with('status','Slider deleted successfully');
+    }
+    public function saveservice(Request $request)
+    {
+        $this->validate($request,[
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'photo' => 'required|image|nullable|max:2048',
+        ]);
+        // 1 : File name with extension
+        $fileNameWithExt = $request->file('photo')->getClientOriginalName();
+        // print_r($fileNameWithExt);
+        // 2 : File name without extension
+        $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        // print_r($fileName);
+
+        // 3 : Get just extension
+        $extension = $request->file('photo')->getClientOriginalExtension();
+        // 4 : File name to store
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        // 5 : Upload Image
+        $path = $request->file('photo')->storeAs('public/serviceimages',$fileNameToStore);
+        
+        $service = new Service();
+        $service->title = $request->input('title');
+        $service->content = $request->input('content');
+        $service->photo = $fileNameToStore;
+        $service->save();
+        return back()->with('status','Service added successfully');
+    }   
+    public function vieweditservice($id){
+        $service = Service::find($id);
+        return view('admin.editservice',compact('service'));
+    }
+    public function updateservice(Request $request,$id){
+        $this->validate($request,[
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'photo' => 'required|image|nullable|max:2048',
+        ]);
+        // 1 : File name with extension
+        $fileNameWithExt = $request->file('photo')->getClientOriginalName();
+        // print_r($fileNameWithExt);
+        // 2 : File name without extension
+        $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+        // print_r($fileName);
+
+        // 3 : Get just extension
+        $extension = $request->file('photo')->getClientOriginalExtension();
+        // 4 : File name to store
+        $fileNameToStore = $fileName.'_'.time().'.'.$extension;
+        // 5 : Upload Image
+        $path = $request->file('photo')->storeAs('public/serviceimages',$fileNameToStore);
+        
+        $service = Service::find($id);
+        $service->title = $request->input('title');
+        $service->content = $request->input('content');
+        $service->photo = $fileNameToStore;
+        $service->update();
+        return back()->with('status','Service updated successfully');
+    }
+    public function deleteservice($id){
+        $service = Service::find($id);
+        $service->delete();
+        return back()->with('status','Service deleted successfully');
+    }
+    public function savefaq(Request $request)
+    {
+        $this->validate($request,[
+            'faq_title' => 'required|string',
+            'faq_content' => 'required|string',
+        ]);
+        $faq = new Faq();
+                $faq->faq_title = $request->input('faq_title');
+        $faq->faq_content = $request->input('faq_content');
+        $faq->save();
+        return back()->with('status','FAQ added successfully');
+    }
+    public function vieweditfaq($id){
+        $faq = Faq::find($id);
+        return view('admin.editfaq',compact('faq'));
+    }
+    public function updatefaq(Request $request,$id){
+        $this->validate($request,[
+            'faq_title' => 'required|string',
+            'faq_content' => 'required|string',
+        ]);
+        $faq = Faq::find($id);
+        $faq->faq_title = $request->input('faq_title');
+        $faq->faq_content = $request->input('faq_content');
+        $faq->update();
+        return back()->with('status','FAQ updated successfully');
+    }
+    public function deletefaq($id){
+        $faq = Faq::find($id);
+        $faq->delete();
+        return back()->with('status','FAQ deleted successfully');
     }
     
 }
