@@ -39,7 +39,7 @@
 
                                        <option value="">Select Top Level Category</option>
                                        @foreach ($toplevelcategories as $toplevelcategory)
-                                       <option value="{{$toplevelcategory->id}}" @if ($product->tcat_id == $toplevelcategory->id) selected @endif>{{$toplevelcategory->tcat_name}}</option>
+                                       <option value="{{$toplevelcategory->tcat_name}}" @if ($product->tcat_id == $toplevelcategory->tcat_name) selected @endif>{{$toplevelcategory->tcat_name}}</option>
                                        @endforeach
                                        {{-- <option value="4" >Electronics</option>
                                        <option value="5" >Health and Household</option>
@@ -55,7 +55,7 @@
                                     <select name="mcat_id" class="form-control select2 mid-cat">
                                        <option value="">Select Mid Level Category</option>
                                        @foreach ($midlevelcategories as $midlevelcategory)
-                                       <option value="{{$midlevelcategory->id}}" @if ($product->mcat_id == $midlevelcategory->id) selected @endif>{{$midlevelcategory->mcat_name}}</option>
+                                       <option value="{{$midlevelcategory->mcat_name}}" @if ($product->mcat_id == $midlevelcategory->mcat_name) selected @endif>{{$midlevelcategory->mcat_name}}</option>
                                        @endforeach
                                        {{-- <option value="4" >Accessories</option>
                                        <option value="3" >Beauty Products</option>
@@ -70,7 +70,7 @@
                                     <select name="ecat_id" class="form-control select2 end-cat">
                                        <option value="">Select End Level Category</option>
                                        @foreach ($endlevelcategories as $endlevelcategory)
-                                       <option value="{{$endlevelcategory->id}}" @if ($product->ecat_id == $endlevelcategory->id) selected @endif>{{$endlevelcategory->ecat_name}}</option>
+                                       <option value="{{$endlevelcategory->ecat_name}}" @if ($product->ecat_id == $endlevelcategory->ecat_name) selected @endif>{{$endlevelcategory->ecat_name}}</option>
                                        @endforeach
                                        {{-- <option value="15" >Coats & Jackets</option>
                                        <option value="32" selected>Dresses</option>
@@ -112,9 +112,8 @@
                                  <label for="" class="col-sm-3 control-label">Select Size</label>
                                  <div class="col-sm-4">
                                     <select name="size[]" class="form-control select2" multiple="multiple">
-                                       @foreach ($sizes as $size)
-                                       <option value="{{$size->id}}" @if (in_array($size->id, $product->size)) selected @endif>{{$size->size_name}}</option>
-
+                                       @foreach ($selectedsizes as $selectedsize)
+                                       <option value="{{$selectedsize}}" @if (in_array($selectedsize, $selectedsize)) selected @endif>{{$selectedsize}}</option>
                                        @endforeach
                                        {{-- <option value="1" >XS</option>
                                        {{-- <option value="2" >S</option>
@@ -170,9 +169,9 @@
                                  <label for="" class="col-sm-3 control-label">Select Color</label>
                                  <div class="col-sm-4">
                                     <select name="color[]" class="form-control select2" multiple="multiple">
-                                       @foreach ($colors as $color)
+                                       {{-- @foreach ($colors as $color)
                                        <option value="{{$color->id}}" @if (in_array($color->id, $product->color)) selected @endif>{{$color->color_name}}</option>
-                                       @endforeach
+                                       @endforeach --}}
                                        {{-- {{-- <option value="1" >Red</option>
                                        <option value="2" selected>Black</option>
                                        <option value="3" >Blue</option>
@@ -209,8 +208,8 @@
                               <div class="form-group">
                                  <label for="" class="col-sm-3 control-label">Existing Featured Photo</label>
                                  <div class="col-sm-4" style="padding-top:4px;">
-                                    <img src="{{asset('uploads/public/productimages/'.$product->p_featured_photo)}}" alt="" style="width:150px;">
-                                    <input type="hidden" name="current_photo" value="{{$product->p_featured_photo}}">
+                                    <img src="{{asset('storage/productimages/'.$product->photo)}}" alt="" style="width:150px;">
+                                    <input type="hidden" name="current_photo" value="{{$product->photo}}">
                                  </div>
                               </div>
                               <div class="form-group">
@@ -226,7 +225,7 @@
                                        <tbody>
                                           <tr>
                                              <td>
-                                                <img src="{{asset('uploads/public/productimages/'.$product->p_featured_photo)}}" alt="" style="width:150px;margin-bottom:5px;">
+                                                <img src="{{asset('storage/productimages/'.$product->p_featured_photo)}}" alt="" style="width:150px;margin-bottom:5px;">
                                              </td>
                                              <td style="width:28px;">
                                                 <a onclick="return confirmDelete();" href="product-other-photo-delete.php?id=132&id1=102" class="btn btn-danger btn-xs">X</a>
@@ -273,8 +272,11 @@
                                  <label for="" class="col-sm-3 control-label">Is Featured?</label>
                                  <div class="col-sm-8">
                                     <select name="p_is_featured" class="form-control" style="width:auto;">
-                                       <option value="0" @if ($product->p_is_featured == 0) selected @endif>No</option>
-                                       <option value="1" @if ($product->p_is_featured == 1) selected @endif>Yes</option>
+                                       @if ($product->p_is_featured == 0)
+                                       <option value="0" selected>No</option>
+                                       @else
+                                       <option value="1" selected>Yes</option>
+                                       @endif
                                     </select>
                                  </div>
                               </div>
@@ -282,8 +284,11 @@
                                  <label for="" class="col-sm-3 control-label">Is Active?</label>
                                  <div class="col-sm-8">
                                     <select name="p_is_active" class="form-control" style="width:auto;">
-                                       <option value="0" @if ($product->p_is_active == 0) selected @endif>No</option>
-                                       <option value="1" @if ($product->p_is_active == 1) selected @endif>Yes</option>
+                                       @if ($product->p_is_active == 0)
+                                       <option value="0" selected>No</option>
+                                       @else
+                                       <option value="1" selected>Yes</option>
+                                       @endif
                                     </select>
                                  </div>
                               </div>

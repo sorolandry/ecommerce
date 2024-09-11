@@ -4,13 +4,26 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Slider;
+use App\Models\Product;
+use App\Models\Service;
+use App\Models\Banner;
+
+
+
+
+
 class ClientController extends Controller
 {
     public function viewhome(){
-        $sliders = Slider::all();
+        $sliders = Slider::get();
         $increment = 0;
         $increment1=0;
-        return view('client.home', compact('sliders', 'increment', 'increment1'));
+        $services = Service::get();
+        // $countproduct = Productsetting::first();
+        $featuredproducts = Product::get();
+        $latestproducts = Product::get();   
+        $popularproducts = Product::get();
+        return view('client.home', compact('sliders', 'increment', 'increment1', 'services', 'featuredproducts', 'latestproducts', 'popularproducts'));
     }
     public function viewabout(){
         return view('client.about');
@@ -49,8 +62,20 @@ class ClientController extends Controller
     public function vieworder(){
         return view('client.order');
     }
-    public function viewproductbycartegory(){
-        return view('client.productbycartegory');
+    public function viewproductbytopcategory($tcat_name){
+        $products = Product::where("tcat_id", $tcat_name)->get();
+        $banner=Banner::first();
+        return view('client.viewproductbycartegory', compact('products','banner'));
+    }
+    public function viewproductbymidcategory($tcat_name, $mcat_name){
+        $products = Product::where("tcat_id", $tcat_name)->where("mcat_id", $mcat_name)->get();
+        $banner=Banner::first();    
+        return view('client.viewproductbycartegory', compact('products','banner'));
+    }
+    public function viewproductbyendcategory($tcat_name, $mcat_name, $ecat_name){
+        $products = Product::where("tcat_id", $tcat_name)->where("mcat_id", $mcat_name)->where("ecat_id", $ecat_name)->get();
+        $banner=Banner::first();    
+        return view('client.viewproductbycartegory', compact('products','banner'));
     }
     public function viewproductdetails(){
         return view('client.productdetails');

@@ -47,19 +47,31 @@ Product Management
                           <tbody>
                              @foreach($products as $product)
                              <tr>
-                                <td>{{$product->id}}</td>
-                                <td style="width:82px;"><img src="{{asset('backend/uploads/product-featured-102.jpg')}}" alt="Women's Plus-Size Shirt Dress with Gold Hardware" style="width:80px;"></td>
+                                <td>{{$increment++}}</td>
+                                <td style="width:82px;"><img src="{{asset('storage/productimages/'.$product->p_featured_photo)}}" alt="{{$product->p_name}}" style="width:80px;"></td>
                                 <td>{{$product->p_name}}</td>
                                 <td>{{$product->p_old_price}}</td>
                                 <td>{{$product->p_current_price}}</td>
-                                <td>{{$product->p_quantity}}</td>
+                                <td>{{$product->p_qty}}</td>
+                                @if($product->p_is_featured)
                                 <td>
-                                   <span class="badge badge-success" style="background-color:{{$product->p_is_featured ? 'green' : 'red'}};">{{$product->p_is_featured ? 'Yes' : 'No'}}</span>									
+                                   <span class="badge badge-success" style="background-color:green;">Yes</span>									
                                 </td>
+                                @else
                                 <td>
-                                   <span class="badge badge-success" style="background-color:{{$product->p_is_active ? 'green' : 'red'}};">{{$product->p_is_active ? 'Yes' : 'No'}}</span>									
+                                   <span class="badge badge-danger" style="background-color:red;">No</span>									
                                 </td>
-                                <td>{{$product->p_category}}</td>
+                                @endif
+                                @if($product->p_is_active)
+                                <td>
+                                   <span class="badge badge-success" style="background-color:green;">Yes</span>									
+                                </td>
+                                @else
+                                <td>
+                                   <span class="badge badge-danger" style="background-color:red;">No</span>									
+                                </td>
+                                @endif
+                                <td>{{$product->ecat_id}} <br>{{$product->mcat_id}} <br>{{$product->tcat_id}}</td>
                                 <td style="display: flex; gap: 10px;">										
                                    <a href="{{url('admin/editproduct/'.$product->id)}}" class="btn btn-primary btn-xs">Edit</a>
                                    {{-- <a href="#" class="btn btn-danger btn-xs" data-href="{{url('admin/deleteproduct/'.$product->id)}}" data-toggle="modal" data-target="#confirm-delete">Delete</a>   --}}

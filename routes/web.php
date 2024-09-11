@@ -38,7 +38,9 @@ Route::get('/profile', [ClientController::class, 'viewprofile']);
 Route::get('/billingdetails', [ClientController::class, 'viewbillingdetails']);
 Route::get('/loginpassword', [ClientController::class, 'viewloginpassword']);
 Route::get('/order', [ClientController::class, 'vieworder']);
-Route::get('/productbycartegory', [ClientController::class, 'viewproductbycartegory']);
+Route::get('viewproductbytopcategory/{tcat_name}', [ClientController::class, 'viewproductbytopcategory']);
+Route::get('viewproductbymidcategory/{tcat_name}/{mcat_name}', [ClientController::class, 'viewproductbymidcategory']);
+Route::get('viewproductbyendcategory/{tcat_name}/{mcat_name}/{ecat_name}', [ClientController::class, 'viewproductbyendcategory']);
 Route::get('/productdetails', [ClientController::class, 'viewproductdetails']); 
 Route::get('/searchproduct', [ClientController::class, 'viewsearchproduct']); 
 

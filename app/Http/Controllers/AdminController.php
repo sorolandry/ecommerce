@@ -80,11 +80,12 @@ class AdminController extends Controller
     }
     public function viewproductmanagement()
     {
-        $products = Product::get();
+        $products = Product::all();
+        $increment = 1;
         $toplevelcategories = Toplevelcategory::get();
         $midlevelcategories = Midlevelcategory::get();
         $endlevelcategories = Endlevelcategory::get();
-        return view('admin.productmanagement',compact('products','toplevelcategories','midlevelcategories','endlevelcategories'));
+        return view('admin.productmanagement',compact('products','toplevelcategories','midlevelcategories','endlevelcategories','increment'));
     }
     public function viewmanagesliders(){
         $sliders = Slider::get();   
@@ -204,12 +205,20 @@ public function viewedittoplevelcategory(){
         $midlevelcategories = Midlevelcategory::get();
         return view('admin.editmidlevelcategory',compact('midlevelcategories','toplevelcategories'));
     }
-    public function vieweditproduct(){
-        $products = Product::get();
-        $toplevelcategories = Toplevelcategory::get();
-        $midlevelcategories = Midlevelcategory::get();
-        $endlevelcategories = Endlevelcategory::get();
-        return view('admin.editproduct',compact('products','toplevelcategories','midlevelcategories','endlevelcategories'));
+    public function vieweditproduct($id){
+        $products = Product::find($id);
+        $toplevelcategories = Toplevelcategory::where('tcat_name','=!',$product->tcat_id)->get();
+        $midlevelcategories = Midlevelcategory::where('mcat_name','=!',$product->mcat_id)->get();
+        $endlevelcategories = Endlevelcategory::where('ecat_name','=!',$product->ecat_id)->get();
+        // $ = Size::where('size_name','=!',$product->size)->get();   
+        // $colors = Color::where('color_name','=!',$product->color)->get();
+        $selectedsizes = explode('*',$product->size);
+        array_pop($selectedsizes);
+        $selectedcolors = explode('*',$product->color);
+        array_pop($selectedcolors);
+        $selectedphotos = explode(',',$product->photo);
+        array_pop($selectedphotos);
+        return view('admin.editproduct',compact('products','toplevelcategories','midlevelcategories','endlevelcategories','selectedsizes','selectedcolors','selectedphotos'));
     }
     public function vieweditprofile(){
         return view('admin.editprofile');
